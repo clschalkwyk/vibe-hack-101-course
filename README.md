@@ -1,120 +1,189 @@
-# MD Slideshow
+# Vibe Hack 101
 
-A minimal, beautiful React-based slideshow app that renders Markdown files as presentation slides.
+Vibe Hack 101 is a short course for hackathon teams learning how to go from vague idea to clear, judge-friendly demo. The material is built around the practical flow most teams need under time pressure: choose the right problem, validate it fast, build the hardest part first, prototype intelligently, design a demo that lands, and pitch with clarity.
 
----
+This repository contains both:
 
-## Quick Start
+- the course content
+- the lightweight slide app used to present it
+
+## Course Overview
+
+The course is structured as a 10-slide teaching sequence in [`public/slides/`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/public/slides):
+
+1. Title and framing
+2. Mindset
+3. Idea generation
+4. Validation
+5. Vibe coding
+6. Hardest-first execution
+7. Prototyping
+8. Demo design
+9. Pitch
+10. Closing
+
+The goal is not to teach hackathon theory in the abstract. The goal is to help teams make better decisions fast enough to matter during an actual event.
+
+## Who This Is For
+
+- Hackathon participants who need a tighter process
+- Builders using AI-assisted workflows
+- Mentors or organizers who want a reusable teaching deck
+- Teams that keep overbuilding and under-explaining
+
+## Core Teaching Themes
+
+- Start from a real problem or a meaningful constraint
+- Force clarity early
+- Validate before polishing
+- Build the riskiest part first
+- Use AI as leverage, not decoration
+- Optimize for a demo moment judges will remember
+- Keep the pitch simpler than your architecture
+
+## Repository Contents
+
+### Course content
+
+The actual curriculum lives in Markdown files under [`public/slides/`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/public/slides). Each file is one slide in the sequence, and [`public/slides/slides.json`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/public/slides/slides.json) controls the order.
+
+That means the fastest way to change the course is to edit Markdown, not React code.
+
+### Slide app
+
+The app is a presentation shell for delivering the course:
+
+- full-screen slide rendering
+- keyboard navigation
+- click navigation
+- overview grid for jumping between slides
+- Markdown-based authoring
+- dark presentation styling for live teaching
+
+## Running The Course Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Open `http://localhost:5173`.
 
----
+## Editing The Course
 
-## Adding Your Own Slides
+To update the curriculum:
 
-1. Drop `.md` files into `public/slides/`
-2. Edit `public/slides/slides.json` to list them in order:
+1. Edit the relevant Markdown file in [`public/slides/`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/public/slides)
+2. Add, remove, or reorder filenames in [`public/slides/slides.json`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/public/slides/slides.json)
+3. Reload the deck and review pacing, readability, and flow
+
+Example manifest:
 
 ```json
 [
-  "01-intro.md",
-  "02-content.md",
-  "03-closing.md"
+  "01-title.md",
+  "02-mindset.md",
+  "03-idea-generation.md"
 ]
 ```
 
-That's it. The app hot-reloads in dev mode.
+## Slide Authoring Format
 
----
+Slides use standard Markdown plus lightweight frontmatter.
 
-## Markdown Format
+Example:
 
-Each file is one slide. Use standard Markdown:
-
-```markdown
+```md
 ---
 label: DAY 01
+layout: title
 ---
 
-# Slide Title
+# Winning Hackathons
 
-Some body text with **bold** and *italic* support.
+Build something judges can understand quickly.
 
 ---
 
-A horizontal rule (---) splits the slide into sections.
-The second section appears below a divider line.
+## Why this matters
 
-- Bullet lists work
-- Like this
-
-> Blockquotes render with an orange accent bar
-
-| Col A | Col B |
-|-------|-------|
-| Tables | work too |
+- Clear story
+- Fast demo
+- Strong payoff
 ```
 
-### Frontmatter options
+### Supported Frontmatter
 
-| Key | Values | Effect |
-|-----|--------|--------|
-| `layout` | `title` | Large centred title layout with gradient heading |
-| `label` | any string | Small pill badge (e.g. `DAY 01`) shown above the title |
+| Key | Example | Effect |
+| --- | --- | --- |
+| `label` | `DAY 01` | Displays a small label above the slide |
+| `layout` | `title` | Uses the large title-slide treatment |
 
----
+### Content Notes
 
-## Navigation
+- `---` inside the body splits a slide into sections
+- Standard Markdown is supported for headings, paragraphs, lists, blockquotes, tables, and code
+- Presentation styling is applied automatically by the app
+
+## Presenter Controls
 
 | Action | Keys |
-|--------|------|
-| Next slide | `→` `↓` `Space` `PageDown` |
-| Previous slide | `←` `↑` `PageUp` |
+| --- | --- |
+| Next slide | `ArrowRight`, `ArrowDown`, `Space`, `PageDown` |
+| Previous slide | `ArrowLeft`, `ArrowUp`, `PageUp` |
 | First slide | `Home` |
 | Last slide | `End` |
-| Overview grid | `Tab` or `Esc` |
-| Click right half | Next slide |
-| Click left half | Previous slide |
+| Toggle overview grid | `Tab` or `Escape` |
 
----
+Mouse navigation:
 
-## Build for Production
+- Click right half of the slide to advance
+- Click left half of the slide to go back
+- Use overview mode to jump directly to a slide
+
+## App Architecture
+
+The app is intentionally small. The important pieces are:
+
+- [`src/hooks/useSlides.js`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/src/hooks/useSlides.js): loads the manifest and slide files
+- [`src/utils/markdown.js`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/src/utils/markdown.js): parses frontmatter and Markdown
+- [`src/components/SlideStage.jsx`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/src/components/SlideStage.jsx): presentation shell and transitions
+- [`src/components/OverviewGrid.jsx`](/Users/raven/Desktop/phaselabs/vibe_hack_course/vibe-hack-101-course/src/components/OverviewGrid.jsx): slide picker for overview mode
+
+## Project Structure
+
+```text
+vibe-hack-101-course/
+├── public/
+│   └── slides/
+│       ├── slides.json
+│       ├── 01-title.md
+│       └── ...
+├── src/
+│   ├── components/
+│   ├── hooks/
+│   ├── utils/
+│   ├── App.jsx
+│   └── index.css
+├── index.html
+└── package.json
+```
+
+## Production Build
 
 ```bash
 npm run build
 ```
 
-Output goes to `dist/`. Serve it with any static file server.
+The build output goes to `dist/`.
 
----
+## Stack
 
-## Project Structure
+- React 18
+- Vite
+- Marked
+- CSS Modules
 
-```
-├── public/
-│   └── slides/
-│       ├── slides.json        ← manifest (ordered list of filenames)
-│       ├── 01-title.md
-│       └── ...
-├── src/
-│   ├── components/
-│   │   ├── SlideStage         ← full-screen slide wrapper + transitions
-│   │   ├── SlideContent       ← markdown rendering + typography
-│   │   ├── OverviewGrid       ← Tab key thumbnail overview
-│   │   └── LoadingScreen      ← loading + error states
-│   ├── hooks/
-│   │   ├── useSlides.js       ← fetches + parses all slides
-│   │   └── useKeyboard.js     ← keyboard navigation
-│   ├── utils/
-│   │   └── markdown.js        ← frontmatter parser + marked renderer
-│   └── App.jsx
-```
+## Notes
 
----
-
-Built with React + Vite + [marked](https://marked.js.org/).
+This repository should be read primarily as a course repo with a custom presentation layer, not as a general-purpose slideshow framework.
