@@ -1,1 +1,5 @@
 notes.txt
+notes/
+slide_tool/node_modules/
+slide_tool/dist/
+node_modules
